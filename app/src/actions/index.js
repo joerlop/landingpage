@@ -6,7 +6,7 @@ export const ADD_EMAIL_FAILURE = 'ADD_EMAIL_FAILURE';
 export const addEmail = email => dispatch => {
   dispatch({ type: ADD_EMAIL_START });
   return axios
-    .post(`${process.env.REACT_APP_DATABASE_URL}api/emails`, email)
+    .post(`${process.env.REACT_APP_DATABASE_URL}/api/emails`, email)
     .then(res => {
       console.log(res)
       dispatch({ type: ADD_EMAIL_SUCCESS, payload: res.data });
