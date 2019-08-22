@@ -35,6 +35,7 @@
     .email-form {
       width: 70%;
       height: 40px;
+      margin-bottom: 15px;
 
       display: flex;
 
@@ -72,9 +73,29 @@
         outline: none;
         font-weight: bold;
       }
+    } //email-form
 
+    .response-container {
+      height: 50px;
+
+      .success-message {
+        color: white;
+  
+        p {
+          font-size: 14px;
+          font-weight: normal;
+        }
+      }
+  
+      .error-message {
+        color: red;
+  
+        p {
+          font-size: 14px;
+          font-weight: normal;
+        }
+      }
     }
-
   } //main-content
 
   .navigation {

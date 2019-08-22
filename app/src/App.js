@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.scss";
 
-import { addEmail } from "./actions";
+import { addEmail, resetState } from "./actions";
 import { connect } from "react-redux";
-import Loader from 'react-loader-spinner';
 
 class App extends React.Component {
   constructor() {
@@ -13,20 +12,28 @@ class App extends React.Component {
     };
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       email: e.target.value
-    })
-  }
+    });
+  };
 
-  saveEmail = (e) => {
+  saveEmail = e => {
     e.preventDefault();
     const emailObject = {
       email: this.state.email
-    }
-    
-    this.props.addEmail(emailObject);
-  }
+    };
+
+    this.props.addEmail(emailObject).then(res => {
+      setTimeout(() => {
+        this.props.resetState();
+      }, 3000);
+    });
+
+    this.setState({
+      email: ""
+    });
+  };
 
   render() {
     return (
@@ -39,10 +46,31 @@ class App extends React.Component {
             Respaldados con bitcoin.
           </h1>
           <div className="email-form">
-            <form onSubmit={(e) => this.saveEmail(e)}>
-              <input onChange={this.handleChange} value={this.state.email} type="email" placeholder="Tu e-mail" />
+            <form onSubmit={e => this.saveEmail(e)}>
+              <input
+                onChange={this.handleChange}
+                value={this.state.email}
+                type="email"
+                placeholder="Tu e-mail"
+              />
             </form>
-            <button onClick={(e) => this.saveEmail(e)}>Notifícame</button>
+            <button onClick={e => this.saveEmail(e)}>Notifícame</button>
+          </div>
+          <div className="response-container">
+            {this.props.success ? (
+              <div className="success-message">
+                <p>{this.props.success}</p>
+              </div>
+            ) : (
+              <> </>
+            )}
+            {this.props.error ? (
+              <div className="error-message">
+                <p>{this.props.error}</p>
+              </div>
+            ) : (
+              <> </>
+            )}
           </div>
         </div>
         <div className="navigation">
@@ -54,12 +82,15 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  savingEmail: state.savingEmail
+  savingEmail: state.savingEmail,
+  error: state.error,
+  success: state.success
 });
 
 export default connect(
   mapStateToProps,
   {
-    addEmail
+    addEmail,
+    resetState
   }
 )(App);
